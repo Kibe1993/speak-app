@@ -1,0 +1,135 @@
+.navbar {
+  width: 100%;
+  min-height: 70px;
+  background-color: #1e293b; /* Slate-800 */
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 70px;
+  overflow: hidden;
+}
+
+.logo img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+  transition: color 0.2s ease-in-out;
+}
+
+.link:hover {
+  color: orange;
+}
+
+.searchForm {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 35%;
+}
+
+.searchInput {
+  background-color: #f1f5f9;
+  color: #1e293b;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
+.searchButton {
+  padding: 10px 16px;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background-color: #475569;
+  color: #fff;
+}
+
+.adminButton {
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.adminButton:hover {
+  background-color: #e0e4e7;
+}
+.mobileIcon {
+  display: none;
+  cursor: pointer;
+}
+
+/* Hide nav links and search by default on mobile */
+@media (max-width: 768px) {
+  .links,
+  .searchForm,
+  .adminButton {
+    display: none;
+  }
+
+  .mobileIcon {
+    display: block;
+  }
+
+  .links.show {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    background-color: #1e293b;
+    width: 100%;
+    padding: 20px 0;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .links.show li {
+    text-align: center;
+  }
+}
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #f1f5f9;
+  border-radius: 1px;
+}
