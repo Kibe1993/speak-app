@@ -25,7 +25,7 @@ export default function Navbar() {
       <nav className="container">
         <div className={styles.logo}>
           <Link href="/">
-            <Image src={logo} width={120} alt="speak-logo" />
+            <Image src={logo} width={120} alt="speak-logo-image" />
           </Link>
         </div>
 
