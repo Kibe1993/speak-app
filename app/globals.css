@@ -17,10 +17,10 @@ body {
 }
 
 .container {
-  width: 80%;
-  margin: 0 auto;
-  padding: 10px 2%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 80% !important;
+  margin: 0 auto !important;
+  padding: 10px 2% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
