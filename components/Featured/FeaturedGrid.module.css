@@ -1,0 +1,37 @@
+/* FeaturedGrid.module.css */
+
+.gridWrapper {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 2rem 0;
+}
+
+.gridContainer {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .gridWrapper {
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .gridWrapper {
+    gap: 1.2rem;
+    padding: 1rem 0;
+  }
+
+  .gridContainer {
+    width: 95%;
+    padding: 0.5rem 1rem;
+  }
+}

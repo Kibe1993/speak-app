@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <section className={styles.navbar}>
-      <nav className="container">
+      <nav className={`${styles.navContainer} container`}>
         <div className={styles.logo}>
           <Link href="/">
             <Image src={logo} width={120} alt="speak-logo-image" />
