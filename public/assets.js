@@ -21,7 +21,52 @@ const blogAssets = [
     _id: "3",
     title: "How to Build a Startup with $0",
     author: "Elena Hustle",
+    category: "L",
+    message:
+      "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
+    date: "2025-06-18",
+  },
+  {
+    _id: "3",
+    title: "How to Build a Startup with $0",
+    author: "Elena Hustle",
     category: "S",
+    message:
+      "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
+    date: "2025-06-18",
+  },
+  {
+    _id: "3",
+    title: "How to Build a Startup with $0",
+    author: "Elena Hustle",
+    category: "S",
+    message:
+      "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
+    date: "2025-06-18",
+  },
+  {
+    _id: "3",
+    title: "How to Build a Startup with $0",
+    author: "Elena Hustle",
+    category: "T",
+    message:
+      "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
+    date: "2025-06-18",
+  },
+  {
+    _id: "3",
+    title: "How to Build a Startup with $0",
+    author: "Elena Hustle",
+    category: "S",
+    message:
+      "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
+    date: "2025-06-18",
+  },
+  {
+    _id: "3",
+    title: "How to Build a Startup with $0",
+    author: "Elena Hustle",
+    category: "L",
     message:
       "You don’t need investors or fancy offices to launch a successful startup. In this guide, we explore real bootstrapping strategies and free tools that can take your idea from zero to traction.",
     date: "2025-06-18",

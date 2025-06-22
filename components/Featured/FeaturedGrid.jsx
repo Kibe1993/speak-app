@@ -4,9 +4,9 @@ import styles from "./FeaturedGrid.module.css";
 
 export default function FeaturedGrid() {
   return (
-    <section className={`${styles.gridContainer}`}>
+    <section className={styles.gridContainer}>
       <div className={styles.gridWrapper}>
-        {blogAssets.map((item, index) => (
+        {blogAssets.slice(0, 3).map((item, index) => (
           <FeaturedItem key={index} item={item} />
         ))}
       </div>
