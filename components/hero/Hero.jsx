@@ -11,7 +11,7 @@ export default function Hero() {
         <header className={styles.header}>
           <p>Find Your Family</p>
           <h1>Where Silence Finds A Voice</h1>
-          <Link href="#" className={styles.getStartedBtn}>
+          <Link href="/share" className={styles.getStartedBtn}>
             Get Started <ArrowRight size={18} />
           </Link>
         </header>

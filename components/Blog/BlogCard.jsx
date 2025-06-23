@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./BlogCard.module.css";
 
-export default function BlogCard({ blog, img }) {
+export default function BlogCard({ blog }) {
   return (
     <div className={styles.card}>
       <Image
-        src={img}
+        src={blog.image}
         alt={blog.title}
         className={styles.image}
         width={400}

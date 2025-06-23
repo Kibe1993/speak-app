@@ -2,7 +2,7 @@ import FeaturedGrid from "./FeaturedGrid";
 import styles from "./Featured.module.css";
 import Link from "next/link";
 
-export default function FeaturedSection() {
+export default function FeaturedSection({ blogs }) {
   return (
     <section className={styles.section}>
       <div className={`${styles.featuredContainer} container`}>
@@ -10,7 +10,7 @@ export default function FeaturedSection() {
           <header className={styles.header}>
             <h2>Featured Blogs</h2>
           </header>
-          <FeaturedGrid />
+          <FeaturedGrid blogs={blogs} />
 
           <div>
             <Link href={"/blogs"} className={styles.seeAllBtn}>

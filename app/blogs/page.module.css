@@ -51,6 +51,7 @@
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
 .header p {
@@ -62,4 +63,34 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+}
+.showMoreWrapper {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.showMoreBtn {
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.showMoreBtn:hover {
+  background-color: #1e293b;
+}
+.active {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+.loadingText {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #334155;
+  padding: 2rem;
 }
