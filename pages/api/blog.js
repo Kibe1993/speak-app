@@ -15,13 +15,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-await connectDB();
-
 export default async function handler(req, res) {
+  await connectDB();
+
   if (req.method === "GET") {
     try {
       const blogs = await BlogModel.find({});
-      return res.status(200).json(blogs);
+      return res.status(200).json({ blogs: blogs });
     } catch (err) {
       return res.status(500).json({ error: "Failed to fetch blogs." });
     }
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const form = new IncomingForm();
+  const form = new IncomingForm({ keepExtensions: true });
 
   await new Promise((resolve, reject) => {
     form.parse(req, async (err, fields, files) => {
@@ -42,6 +42,10 @@ export default async function handler(req, res) {
 
       try {
         const file = Array.isArray(files.image) ? files.image[0] : files.image;
+
+        if (!file || !file.filepath) {
+          return res.status(400).json({ error: "No file uploaded." });
+        }
 
         const result = await cloudinary.uploader.upload(file.filepath, {
           folder: "speakapp",
@@ -59,7 +63,8 @@ export default async function handler(req, res) {
         res.status(201).json({ message: "Blog Created", data: newPost });
         resolve();
       } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Upload error:", error);
+        res.status(500).json({ error: "Failed to create blog." });
         reject(error);
       }
     });

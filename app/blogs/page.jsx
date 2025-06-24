@@ -15,7 +15,7 @@ export default function Blogs() {
     setIsLoading(true);
     try {
       const response = await axios.get("/api/blog");
-      setBlogs(response.data);
+      setBlogs(response.data.blogs);
     } catch (error) {
       console.error("Failed to fetch blogs", error);
     } finally {
@@ -50,17 +50,19 @@ export default function Blogs() {
             <h1>Our Blogs</h1>
           </div>
           <div className={styles.filters}>
-            {["All", "Lifestyle", "Startup", "Technology"].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => handleFiltered(cat)}
-                className={`${styles.filterBtn} ${
-                  filtered === cat ? styles.active : ""
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+            {["All", "Lifestyle", "General", "Startup", "Technology"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  onClick={() => handleFiltered(cat)}
+                  className={`${styles.filterBtn} ${
+                    filtered === cat ? styles.active : ""
+                  }`}
+                >
+                  {cat}
+                </button>
+              )
+            )}
           </div>
         </div>
         {loading && <p className={styles.loadingText}>Loading blogs...</p>}

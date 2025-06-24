@@ -48,6 +48,7 @@ export default function Navbar() {
                 className={`${styles.link} ${
                   pathName === link.href ? styles.active : ""
                 }`}
+                onClick={() => setMenuOpen(false)}
               >
                 {link.name}
               </Link>

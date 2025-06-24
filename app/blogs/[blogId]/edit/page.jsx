@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import styles from "./page.module.css";
+import { toast } from "react-toastify";
 
 export default function EditBlogPage() {
   const { blogId } = useParams();
@@ -24,15 +25,17 @@ export default function EditBlogPage() {
     async function fetchBlog() {
       try {
         const res = await axios.get(`/api/blogs/${blogId}`);
+        const { title, image, category, message, author } = res.data.updated;
 
         setForm({
-          title: res.data.title,
-          image: res.data.image,
-          category: res.data.category,
-          message: res.data.message,
-          author: res.data.author,
+          title: title,
+          image: image,
+          category: category,
+          message: message,
+          author: author,
         });
         setLoading(false);
+        toast.success(res.data.msg);
       } catch (err) {
         setError("Failed to load blog");
         setLoading(false);

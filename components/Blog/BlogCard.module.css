@@ -9,6 +9,7 @@
   transition: transform 0.2s ease;
   height: 450px; /* You can adjust this */
   overflow: hidden;
+  max-width: 400px;
 }
 
 .card:hover {
