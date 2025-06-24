@@ -6,15 +6,17 @@ export default function FeaturedItem({ item }) {
   return (
     <div className={styles.card}>
       {item.image && (
-        <div className={styles.imageWrapper}>
-          <Image
-            src={item.image}
-            alt={item.title}
-            width={400}
-            height={250}
-            className={styles.image}
-          />
-        </div>
+        <Link href={`/blogs/${item._id}`}>
+          <div className={styles.imageWrapper}>
+            <Image
+              src={item.image}
+              alt={item.title}
+              width={400}
+              height={250}
+              className={styles.image}
+            />
+          </div>
+        </Link>
       )}
 
       <div className={styles.header}>

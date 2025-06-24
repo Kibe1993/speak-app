@@ -5,13 +5,17 @@ import styles from "./BlogCard.module.css";
 export default function BlogCard({ blog }) {
   return (
     <div className={styles.card}>
-      <Image
-        src={blog.image}
-        alt={blog.title}
-        className={styles.image}
-        width={400}
-        height={200}
-      />
+      <Link href={`/blogs/${blog._id}`} className={styles.imageWrapper}>
+        <div className={styles.imageWrapper}>
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            fill
+            className={styles.image}
+            priority
+          />
+        </div>
+      </Link>
 
       <div className={styles.header}>
         <h3 className={styles.title}>{blog.title}</h3>
