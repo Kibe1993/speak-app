@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import axios from "axios";
 
 export default function Blogs() {
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(6);
   const [filtered, setfiltered] = useState("All");
   const [loading, setIsLoading] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Blogs() {
   }, []);
 
   const showMore = () => {
-    setVisibleCount((prev) => prev + 8);
+    setVisibleCount((prev) => prev + 6);
   };
 
   const hasMore = visibleCount < blogs.length;
@@ -68,11 +68,12 @@ export default function Blogs() {
         {loading && <p className={styles.loadingText}>Loading blogs...</p>}
 
         <div className={styles.grid}>
-          {filteredBlogs.slice(0, visibleCount).map((blog, i) => (
-            <BlogCard key={i} blog={blog} />
+          {filteredBlogs.slice(0, visibleCount).map((blog) => (
+            <BlogCard key={blog._id} blog={blog} />
           ))}
         </div>
 
+        {/* Show More Button */}
         {hasMore && (
           <div className={styles.showMoreWrapper}>
             <button onClick={showMore} className={styles.showMoreBtn}>

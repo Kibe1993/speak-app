@@ -3,6 +3,8 @@ import Image from "next/image";
 import styles from "./BlogCard.module.css";
 
 export default function BlogCard({ blog }) {
+  const dateToUse = blog.createdAt ? new Date(blog.createdAt) : new Date();
+  const formattedDate = dateToUse.toLocaleString();
   return (
     <div className={styles.card}>
       <Link href={`/blogs/${blog._id}`} className={styles.imageWrapper}>
@@ -28,7 +30,7 @@ export default function BlogCard({ blog }) {
 
       <div className={styles.meta}>
         <p>{blog.author}</p>
-        <p>{blog.date}</p>
+        <p>{formattedDate}</p>
       </div>
 
       <Link href={`/blogs/${blog._id}`} className={styles.readMore}>

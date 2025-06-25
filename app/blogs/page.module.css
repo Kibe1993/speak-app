@@ -61,7 +61,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 .showMoreWrapper {
@@ -93,4 +93,31 @@
   font-size: 1.2rem;
   color: #334155;
   padding: 2rem;
+}
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .header p {
+    font-size: 1rem;
+  }
+
+  .filterBtn {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
 }

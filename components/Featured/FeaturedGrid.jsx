@@ -2,10 +2,11 @@ import FeaturedItem from "./FeaturedItem";
 import styles from "./FeaturedGrid.module.css";
 
 export default function FeaturedGrid({ blogs }) {
+  const shuffledBlogs = [...blogs].sort(() => 0.5 - Math.random());
   return (
     <section className={styles.gridContainer}>
       <div className={styles.gridWrapper}>
-        {blogs.slice(0, 6).map((item, index) => (
+        {shuffledBlogs.slice(0, 4).map((item, index) => (
           <FeaturedItem key={index} item={item} />
         ))}
       </div>
