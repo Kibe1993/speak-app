@@ -1,7 +1,6 @@
-import Navbar from "@/components/navbar/Navbar";
 import "./globals.css";
-import Footer from "@/components/footer/Footer";
 import { ToastContainer } from "react-toastify";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 export const metadata = {
   title: "Speak App",
@@ -13,9 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ToastContainer theme="dark" />
-        <Navbar />
-        {children}
-        <Footer />
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );
