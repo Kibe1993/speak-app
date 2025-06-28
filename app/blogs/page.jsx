@@ -36,11 +36,12 @@ export default function Blogs() {
   const handleFiltered = (filter) => {
     setfiltered(filter);
   };
+  const approvedBlogs = blogs.filter((blog) => blog.approved === true);
 
   const filteredBlogs =
     filtered === "All"
-      ? blogs
-      : blogs.filter((blog) => blog.category === filtered);
+      ? approvedBlogs
+      : approvedBlogs.filter((blog) => blog.category === filtered);
 
   return (
     <section className={styles.blogs}>

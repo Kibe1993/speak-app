@@ -3,6 +3,20 @@ import UserModel from "@/lib/models/Email";
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/config/DB";
 
+export async function GET() {
+  try {
+    await connectDB();
+    const emails = await UserModel.find({});
+    return NextResponse.json({ msg: "Emails retrieved", emails });
+  } catch (error) {
+    console.error("Error fetching emails:", error);
+    return NextResponse.json(
+      { error: "Failed to retrieve emails" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request) {
   const { email } = await request.json();
 

@@ -27,6 +27,8 @@ export default function AdminPage() {
     fetchBlogs();
   }, []);
 
+  console.log(blogs);
+
   const handleDelete = async (blogId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this blog?"
@@ -46,7 +48,6 @@ export default function AdminPage() {
 
   return (
     <>
-      <Navbar />
       <div className={styles.adminContainer}>
         <SideBar />
         <ProjectTable blogs={blogs} handleDelete={handleDelete} />

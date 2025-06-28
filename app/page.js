@@ -29,9 +29,10 @@ export default function Home() {
   return (
     <>
       <Hero blogs={blogs} />
-      <FeaturedSection blogs={blogs} />
+
+      {blogs.length > 0 && <FeaturedSection blogs={blogs} />}
       <Subscription />
-      <RecentPost blogs={blogs} />
+      {blogs.length > 0 && <RecentPost blogs={blogs} />}
     </>
   );
 }

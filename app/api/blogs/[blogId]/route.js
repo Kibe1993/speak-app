@@ -30,6 +30,7 @@ export async function PUT(request, { params }) {
   const body = await request.json();
 
   try {
+    await connectDB();
     const updated = await BlogModel.findByIdAndUpdate(blogId, body, {
       new: true,
     });
@@ -56,6 +57,34 @@ export async function DELETE(request, { params }) {
     console.error("DELETE error:", error);
     return NextResponse.json(
       { error: "Failed to delete blog" },
+      { status: 500 }
+    );
+  }
+}
+export async function PATCH(request, { params }) {
+  const { blogId } = params;
+
+  if (!blogId || !Types.ObjectId.isValid(blogId)) {
+    return NextResponse.json({ error: "Invalid blog ID" }, { status: 400 });
+  }
+
+  const body = await request.json();
+
+  try {
+    await connectDB();
+
+    const updated = await BlogModel.findByIdAndUpdate(blogId, body, {
+      new: true,
+    });
+
+    if (!updated) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ msg: "Blog patched", updated });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to patch blog" },
       { status: 500 }
     );
   }

@@ -1,13 +1,33 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import styles from "./ProjectTable.module.css";
+import { toast } from "react-toastify";
 
 export default function ProjectTable({ blogs, handleDelete }) {
-  const [approved, setApproved] = useState(false);
+  const [localBlogs, setLocalBlogs] = useState(blogs);
 
-  const handleApprove = () => {
-    setApproved((prev) => !prev);
+  useEffect(() => {
+    setLocalBlogs(blogs);
+  }, [blogs]);
+
+  const handleToggle = async (id, field, currentValue) => {
+    try {
+      const response = await axios.patch(`/api/blogs/${id}`, {
+        [field]: !currentValue,
+      });
+      setLocalBlogs((prevBlogs) =>
+        prevBlogs.map((blog) =>
+          blog._id === id ? { ...blog, [field]: !currentValue } : blog
+        )
+      );
+      console.log(localBlogs);
+
+      toast.success(response.data.msg);
+    } catch (error) {
+      toast.error(`Failed to update ${field} status`, error);
+    }
   };
 
   return (
@@ -19,12 +39,13 @@ export default function ProjectTable({ blogs, handleDelete }) {
           <tr>
             <th>#</th>
             <th>Title</th>
-            <th>Status</th>
+            <th>Approved</th>
+            <th>Featured</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {blogs.map((blog, index) => (
+          {localBlogs.map((blog, index) => (
             <tr key={blog._id}>
               <td>{index + 1}</td>
               <td>
@@ -33,16 +54,30 @@ export default function ProjectTable({ blogs, handleDelete }) {
                 </Link>
               </td>
               <td>
-                {approved ? (
+                {blog.approved ? (
                   "Approved"
                 ) : (
                   <button
                     className={styles.pendingButton}
-                    onClick={() => handleApprove(blog._id)}
+                    onClick={() =>
+                      handleToggle(blog._id, "approved", blog.approved)
+                    }
                   >
                     Pending
                   </button>
                 )}
+              </td>
+              <td>
+                <button
+                  className={`${styles.featuredButton} ${
+                    blog.featured ? styles.featuredActive : ""
+                  }`}
+                  onClick={() =>
+                    handleToggle(blog._id, "featured", blog.featured)
+                  }
+                >
+                  {blog.featured ? "Featured" : "Not Featured"}
+                </button>
               </td>
               <td>
                 <button
