@@ -35,6 +35,12 @@ export default function SharePage() {
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
       const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
+      console.log("Cloud name:", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
+      console.log(
+        "Upload preset:",
+        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+      );
+
       const cloudForm = new FormData();
       cloudForm.append("file", file);
       cloudForm.append("upload_preset", uploadPreset);
