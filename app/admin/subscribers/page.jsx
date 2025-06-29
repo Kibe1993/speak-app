@@ -26,6 +26,7 @@ export default function SubscribersPage() {
     try {
       await axios.delete(`/api/subscribe/${id}`);
       setEmails((prev) => prev.filter((email) => email._id !== id));
+      toast.success("Deleted Successfully");
     } catch (error) {
       toast.error("Failed to delete subscriber.");
     }
