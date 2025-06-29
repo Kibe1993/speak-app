@@ -22,15 +22,54 @@ export default function SharePage() {
     setLoading(true);
 
     const form = e.target;
-    const formData = new FormData(form);
-    formData.append("image", fileRef.current.files[0]);
+    const file = fileRef.current.files[0];
+
+    if (!file) {
+      toast.error("Please select an image.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await axios.post("/api/blog", formData);
+      // Upload image to Cloudinary
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+      const cloudForm = new FormData();
+      cloudForm.append("file", file);
+      cloudForm.append("upload_preset", uploadPreset);
+
+      const cloudRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: cloudForm,
+        }
+      );
+
+      const cloudData = await cloudRes.json();
+
+      if (!cloudData.secure_url) {
+        console.error("Cloudinary error response:", cloudData);
+        throw new Error("Cloudinary upload failed");
+      }
+
+      // Submit blog data to your API
+      const blogData = {
+        title: form.title.value,
+        author: form.author.value,
+        category: form.category.value,
+        message: form.message.value,
+        image: cloudData.secure_url,
+      };
+
+      const res = await axios.post("/api/blog", blogData);
       toast.success(res.data.message);
+
       form.reset();
       setPreview(null);
     } catch (err) {
+      console.error(err);
       toast.error("❌ Failed to submit blog.");
     } finally {
       setLoading(false);
