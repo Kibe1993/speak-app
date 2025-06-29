@@ -24,6 +24,7 @@ export default function Blogs() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     fetchBlogs();
   }, []);
 
