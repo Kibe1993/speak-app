@@ -15,8 +15,6 @@ export default function Home() {
     try {
       const response = await axios.get("/api/blog");
       setBlogs(response.data.blogs);
-
-      console.log(blogs);
     } catch (error) {
       console.error("Failed to fetch blogs", error);
     }

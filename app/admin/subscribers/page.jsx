@@ -12,7 +12,6 @@ export default function SubscribersPage() {
     try {
       const response = await axios.get("/api/subscribe");
       setEmails(response.data.emails);
-      toast.success(response.data.msg);
     } catch (error) {
       toast.error("Failed to fetch subscribers");
     }
@@ -27,14 +26,18 @@ export default function SubscribersPage() {
     try {
       await axios.delete(`/api/subscribe/${id}`);
       setEmails((prev) => prev.filter((email) => email._id !== id));
-      toast.success("Subscriber deleted.");
     } catch (error) {
       toast.error("Failed to delete subscriber.");
     }
   };
 
   useEffect(() => {
-    fetchEmails();
+    const loadEmails = async () => {
+      await fetchEmails();
+      toast.success("Emails retrieved successfully");
+    };
+
+    loadEmails();
   }, []);
 
   return (

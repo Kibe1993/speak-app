@@ -1,0 +1,59 @@
+.commentList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.commentItem {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.commentAuthor {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.commentDate {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.card {
+  margin-top: 20px;
+  background: #f3f4f6;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.author {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.date {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.deleteBtn {
+  background-color: #ef4444;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-top: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #dc2626;
+}

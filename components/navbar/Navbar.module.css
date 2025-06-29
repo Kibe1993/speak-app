@@ -33,7 +33,7 @@
 
 .links {
   display: flex;
-  gap: 24px;
+  gap: 40px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -51,7 +51,7 @@
   color: orange;
 }
 
-.searchForm {
+/* .searchForm {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -81,7 +81,7 @@
 .searchButton:hover {
   background-color: #475569;
   color: #fff;
-}
+} */
 
 .adminButton {
   background-color: #f1f5f9;

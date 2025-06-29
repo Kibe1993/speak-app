@@ -3,6 +3,8 @@ import Image from "next/image";
 import styles from "./FeaturedItem.module.css";
 
 export default function FeaturedItem({ item }) {
+  const dateToUse = item.createdAt ? new Date(item.createdAt) : new Date();
+  const formattedDate = dateToUse.toLocaleDateString();
   return (
     <div className={styles.card}>
       {item.image && (
@@ -30,19 +32,7 @@ export default function FeaturedItem({ item }) {
 
       <div className={styles.meta}>
         <p>{item.author}</p>
-        <p>
-          {item.date
-            ? new Date(item.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-            : new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-        </p>
+        <p>{formattedDate}</p>
       </div>
 
       {/* Read More link */}

@@ -56,18 +56,6 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <form role="search" className={styles.searchForm}>
-          <input
-            type="search"
-            name="q"
-            placeholder="Search..."
-            className={styles.searchInput}
-          />
-          <button type="submit" className={styles.searchButton}>
-            Search
-          </button>
-        </form>
-
         <Link href="/admin" className={styles.adminButton}>
           Admin
         </Link>
