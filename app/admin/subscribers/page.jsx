@@ -34,7 +34,6 @@ export default function SubscribersPage() {
   useEffect(() => {
     const loadEmails = async () => {
       await fetchEmails();
-      toast.success("Emails retrieved successfully");
     };
 
     loadEmails();
