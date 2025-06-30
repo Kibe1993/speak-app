@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "@/public/speak-logo.png";
 import Link from "next/link";
@@ -8,10 +8,27 @@ import styles from "./Navbar.module.css";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
+import { SignInButton, useUser, useClerk } from "@clerk/nextjs";
+import { toast } from "react-toastify";
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const pathName = usePathname();
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
+
+  const allowedEmail = "kiberichard.kr@gmail.com";
+
+  useEffect(() => {
+    if (
+      isLoaded &&
+      isSignedIn &&
+      user?.primaryEmailAddress?.emailAddress !== allowedEmail
+    ) {
+      toast.error("Access denied: Unauthorized email.");
+      signOut();
+    }
+  }, [isLoaded, isSignedIn, user, signOut]);
 
   const links = [
     { name: "Home", href: "/" },
@@ -19,6 +36,9 @@ export default function Navbar() {
     { name: "Share", href: "/share" },
     { name: "Contact", href: "/contact" },
   ];
+
+  const isAdmin =
+    isSignedIn && user?.primaryEmailAddress?.emailAddress === allowedEmail;
 
   return (
     <section className={styles.navbar}>
@@ -56,9 +76,17 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <Link href="/admin" className={styles.adminButton}>
-          Admin
-        </Link>
+        <div className={styles.authButtons}>
+          {!isLoaded ? null : isAdmin ? (
+            <Link href="/admin" className={styles.adminButton}>
+              Admin
+            </Link>
+          ) : (
+            <SignInButton mode="modal">
+              <button className={styles.adminButton}>Sign In</button>
+            </SignInButton>
+          )}
+        </div>
       </nav>
     </section>
   );

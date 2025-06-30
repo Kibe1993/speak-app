@@ -42,21 +42,21 @@ export default function BlogDetails() {
   }, [blogId]);
 
   // 🗑️ Handle blog deletion
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this blog?"
-    );
-    if (!confirmDelete) return;
+  // const handleDelete = async () => {
+  //   const confirmDelete = window.confirm(
+  //     "Are you sure you want to delete this blog?"
+  //   );
+  //   if (!confirmDelete) return;
 
-    try {
-      const response = await axios.delete(`/api/blogs/${blogId}`);
-      toast.success(response.data.msg);
-      router.push("/blogs");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete blog");
-    }
-  };
+  //   try {
+  //     const response = await axios.delete(`/api/blogs/${blogId}`);
+  //     toast.success(response.data.msg);
+  //     router.push("/blogs");
+  //   } catch (err) {
+  //     console.error(err);
+  //     toast.error("Failed to delete blog");
+  //   }
+  // };
 
   // ============================
   // 💬 COMMENT STATE + FUNCTIONS
@@ -177,9 +177,6 @@ export default function BlogDetails() {
               >
                 Edit
               </Link>
-              <button onClick={handleDelete} className={styles.deleteButton}>
-                Delete
-              </button>
             </div>
           </main>
 

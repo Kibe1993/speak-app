@@ -1,19 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/speak-logo.png";
-import Link from "next/link";
 import styles from "./Navbar.module.css";
+import { SignOutButton } from "@clerk/nextjs";
 
-import { usePathname } from "next/navigation";
-
-export default function Navbar() {
+export default function AdminNavbar() {
   const pathName = usePathname();
 
   const links = [
-    { name: "Home", href: "/" },
-    { name: "Blog", href: "/blogs" },
+    { name: "Subscribers", href: "/admin/subscribers" },
+    { name: "Dashboard", href: "/admin" },
   ];
 
   return (
@@ -25,7 +24,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <ul className={`${styles.links} `}>
+        <ul className={`${styles.links}`}>
           {links.map((link) => (
             <li key={link.name}>
               <Link
@@ -39,6 +38,10 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+
+        <SignOutButton>
+          <button className={styles.adminButton}>Sign Out</button>
+        </SignOutButton>
       </nav>
     </section>
   );

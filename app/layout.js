@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata = {
   title: "Speak App",
@@ -9,11 +10,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <ToastContainer theme="dark" />
-        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <ToastContainer theme="dark" />
+          <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
