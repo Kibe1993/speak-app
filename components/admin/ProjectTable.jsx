@@ -1,9 +1,11 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./ProjectTable.module.css";
 import { toast } from "react-toastify";
+import { useParams } from "next/navigation";
 
 export default function ProjectTable({ blogs, handleDelete }) {
   const [localBlogs, setLocalBlogs] = useState(blogs);
@@ -22,8 +24,6 @@ export default function ProjectTable({ blogs, handleDelete }) {
           blog._id === id ? { ...blog, [field]: !currentValue } : blog
         )
       );
-      console.log(localBlogs);
-
       toast.success(response.data.msg);
     } catch (error) {
       toast.error(`Failed to update ${field} status`, error);
@@ -79,7 +79,7 @@ export default function ProjectTable({ blogs, handleDelete }) {
                   {blog.featured ? "Featured" : "Not Featured"}
                 </button>
               </td>
-              <td>
+              <td className={styles.actionButtons}>
                 <button
                   onClick={() => handleDelete(blog._id)}
                   className={styles.deleteButton}

@@ -17,14 +17,17 @@ export default function Navbar() {
   const { isLoaded, isSignedIn, user } = useUser();
   const { signOut } = useClerk();
 
-  const allowedEmail = "kiberichard.kr@gmail.com";
+  const normalizedEmail =
+    user?.primaryEmailAddress?.emailAddress?.toLowerCase();
+
+  const allowedEmail = [
+    "kiberichard.kr@gmail.com",
+    "denniskariuki337@gmail.com",
+    "richardkibe.dev@gmail.com",
+  ].map((email) => email.toLowerCase());
 
   useEffect(() => {
-    if (
-      isLoaded &&
-      isSignedIn &&
-      user?.primaryEmailAddress?.emailAddress !== allowedEmail
-    ) {
+    if (isLoaded && isSignedIn && !allowedEmail.includes(normalizedEmail)) {
       toast.error("Access denied: Unauthorized email.");
       signOut();
     }
@@ -37,8 +40,7 @@ export default function Navbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  const isAdmin =
-    isSignedIn && user?.primaryEmailAddress?.emailAddress === allowedEmail;
+  const isAdmin = isSignedIn && allowedEmail.includes(normalizedEmail);
 
   return (
     <section className={styles.navbar}>

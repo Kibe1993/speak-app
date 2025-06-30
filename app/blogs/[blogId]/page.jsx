@@ -1,35 +1,52 @@
 "use client";
 
-// ⬇️ Import hooks and utilities
+// ⬇️ Imports
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./page.module.css";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import dummyImg from "@/public/dummyImg.jpg";
+import styles from "./page.module.css";
 import { toast } from "react-toastify";
 import CommentCard from "@/components/Blog/CommentCard";
+import { useUser } from "@clerk/nextjs";
 
 export default function BlogDetails() {
-  // 📌 Core blog state and routing
+  // 🧠 Blog state
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { blogId } = useParams();
   const router = useRouter();
 
-  // ============================
-  // 🧠 BLOG FUNCTIONS
-  // ============================
+  // 🧠 Comment state
+  const [showForm, setShowForm] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentForm, setCommentForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const formRef = useRef(null);
 
-  // 🔁 Fetch blog data on page load
+  // 🛡️ Admin check
+  const { user, isSignedIn } = useUser();
+  const isAdmin =
+    isSignedIn &&
+    [
+      "kiberichard.kr@gmail.com",
+      "denniskariuki337@gmail.com",
+      "richardkibe.dev@gmail.com",
+    ].includes(user?.primaryEmailAddress?.emailAddress?.toLowerCase());
+
+  // 📡 Fetch blog on mount
   useEffect(() => {
     const fetchBlog = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/blogs/${blogId}`);
-        setBlog(response.data.updated);
+        const res = await axios.get(`/api/blogs/${blogId}`);
+        setBlog(res.data.updated);
       } catch (err) {
         setError("Could not load blog");
         console.error(err);
@@ -41,6 +58,21 @@ export default function BlogDetails() {
     if (blogId) fetchBlog();
   }, [blogId]);
 
+  // 💬 Fetch comments
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(`/api/comments/${blogId}`);
+        setComments(res.data.comments);
+      } catch (err) {
+        console.error("Failed to load comments", err);
+      }
+    };
+
+    if (blogId) fetchComments();
+  }, [blogId]);
+
+  // 🔗 Make links open in new tab
   useEffect(() => {
     if (!loading && blog) {
       document
@@ -52,56 +84,7 @@ export default function BlogDetails() {
     }
   }, [loading, blog]);
 
-  // 🗑️ Handle blog deletion
-  // const handleDelete = async () => {
-  //   const confirmDelete = window.confirm(
-  //     "Are you sure you want to delete this blog?"
-  //   );
-  //   if (!confirmDelete) return;
-
-  //   try {
-  //     const response = await axios.delete(`/api/blogs/${blogId}`);
-  //     toast.success(response.data.msg);
-  //     router.push("/blogs");
-  //   } catch (err) {
-  //     console.error(err);
-  //     toast.error("Failed to delete blog");
-  //   }
-  // };
-
-  // ============================
-  // 💬 COMMENT STATE + FUNCTIONS
-  // ============================
-
-  const [showForm, setShowForm] = useState(false);
-  const [comments, setComments] = useState([]);
-  const [commentForm, setCommentForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const formRef = useRef(null);
-
-  // 🔁 Fetch blog comments
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(`/api/comments/${blogId}`);
-        setComments(res.data.comments);
-      } catch (err) {
-        console.error("Failed to load comment", err);
-      }
-    };
-
-    if (blogId) fetchComments();
-  }, [blogId]);
-
-  const handleCommentDelete = (id) => {
-    setComments((prevComments) => prevComments.filter((c) => c._id !== id));
-  };
-
-  // 🎯 Detect outside click to close comment form
+  // 🧹 Handle outside click on comment form
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
@@ -118,16 +101,7 @@ export default function BlogDetails() {
     };
   }, [showForm]);
 
-  // ✍️ Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCommentForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // 📤 Submit a comment
+  // 📤 Submit comment
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -148,17 +122,37 @@ export default function BlogDetails() {
     }
   };
 
-  // ============================
-  // 🔲 RENDER UI
-  // ============================
+  // 🧽 Handle comment delete from child
+  const handleCommentDelete = (id) => {
+    setComments((prevComments) => prevComments.filter((c) => c._id !== id));
+  };
+
+  // 🗑️ Delete blog
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this blog?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axios.delete(`/api/blogs/${blogId}`);
+      toast.success(response.data.msg);
+      router.push("/blogs");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete blog");
+    }
+  };
+
+  // ===========================
+  // 🖼️ RENDER
+  // ===========================
 
   return (
     <section className={styles.section}>
-      {/* ⏳ Loading & error display */}
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
-      {/* ✅ Blog Content */}
       {!loading && blog && (
         <div className={`${styles.blogContainer} container`}>
           {/* 📰 Blog Header */}
@@ -178,28 +172,33 @@ export default function BlogDetails() {
             </div>
           </header>
 
-          {/* 📃 Blog Body */}
+          {/* 📃 Blog Content */}
           <main className={styles.main}>
             <div
               className={styles.blogContent}
               dangerouslySetInnerHTML={{ __html: blog.message }}
             />
 
-            <div className={styles.actions}>
-              <Link
-                href={`/blogs/${blogId}/edit`}
-                className={styles.editButton}
-              >
-                Edit
-              </Link>
-            </div>
+            {/* ✅ Admin-only actions */}
+            {isAdmin && (
+              <div className={styles.actions}>
+                <Link
+                  href={`/blogs/${blogId}/edit`}
+                  className={styles.editButton}
+                >
+                  Edit
+                </Link>
+                <button onClick={handleDelete} className={styles.deleteButton}>
+                  Delete
+                </button>
+              </div>
+            )}
           </main>
 
           {/* 💬 Comments Section */}
           <section className={styles.commentSection}>
             <h2 className={styles.commentTitle}>Comments</h2>
 
-            {/* ➕ Show Add Comment Button */}
             {!showForm && (
               <button
                 onClick={() => setShowForm(true)}
@@ -209,7 +208,6 @@ export default function BlogDetails() {
               </button>
             )}
 
-            {/* 📝 Comment Form */}
             {showForm && (
               <form
                 ref={formRef}
@@ -221,7 +219,12 @@ export default function BlogDetails() {
                   name="name"
                   placeholder="Your name"
                   value={commentForm.name}
-                  onChange={handleInputChange}
+                  onChange={(e) =>
+                    setCommentForm((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
                   required
                 />
                 <input
@@ -229,13 +232,23 @@ export default function BlogDetails() {
                   name="email"
                   placeholder="Your email (optional)"
                   value={commentForm.email}
-                  onChange={handleInputChange}
+                  onChange={(e) =>
+                    setCommentForm((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
                 />
                 <textarea
                   name="message"
                   placeholder="Write your comment..."
                   value={commentForm.message}
-                  onChange={handleInputChange}
+                  onChange={(e) =>
+                    setCommentForm((prev) => ({
+                      ...prev,
+                      message: e.target.value,
+                    }))
+                  }
                   required
                 ></textarea>
                 <button type="submit" className={styles.commentSubmitBtn}>
@@ -244,13 +257,12 @@ export default function BlogDetails() {
               </form>
             )}
 
-            {/* 🗂️ Comment List */}
             <div className={styles.commentList}>
               {comments.length === 0 && <p>No comments yet.</p>}
               {comments.map((comment) => (
                 <CommentCard
-                  comment={comment}
                   key={comment._id}
+                  comment={comment}
                   onDelete={handleCommentDelete}
                 />
               ))}

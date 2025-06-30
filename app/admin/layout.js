@@ -1,5 +1,5 @@
 // app/admin/layout.js
-import { currentUser } from "@clerk/nextjs/server";
+
 import Navbar from "@/components/admin/Navbar";
 
 export const metadata = {
