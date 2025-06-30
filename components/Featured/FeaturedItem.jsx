@@ -28,7 +28,7 @@ export default function FeaturedItem({ item }) {
 
       <div
         className={styles.message}
-        dangerouslySetInnerHTML={{ __html: blog.message }}
+        dangerouslySetInnerHTML={{ __html: item.message }}
       />
 
       <div className={styles.meta}>

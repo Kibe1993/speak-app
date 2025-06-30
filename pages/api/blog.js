@@ -1,6 +1,7 @@
 import BlogModel from "@/lib/models/BlogModel";
 import connectDB from "@/lib/config/DB";
 import sanitizeHtml from "sanitize-html";
+import linkifyHtml from "linkify-html";
 
 export default async function handler(req, res) {
   await connectDB();
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "All fields are required." });
       }
 
-      // ✅ Sanitize message input to prevent XSS
+      // Step 1: Sanitize dangerous HTML
       const cleanMessage = sanitizeHtml(message, {
         allowedTags: [
           "b",
@@ -40,16 +41,23 @@ export default async function handler(req, res) {
           "h3",
         ],
         allowedAttributes: {
-          a: ["href", "target"],
+          a: ["href", "target", "rel"],
         },
         allowedSchemes: ["http", "https", "mailto"],
+      });
+
+      // Step 2: Convert raw links into <a> tags
+      const linkedMessage = linkifyHtml(cleanMessage, {
+        defaultProtocol: "https",
+        target: "_blank",
+        rel: "noopener noreferrer",
       });
 
       const newBlog = await BlogModel.create({
         title,
         author,
         category,
-        message: cleanMessage,
+        message: linkedMessage,
         image,
       });
 

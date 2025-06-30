@@ -2,7 +2,40 @@ import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 import connectDB from "@/lib/config/DB";
 import BlogModel from "@/lib/models/BlogModel";
+import sanitizeHtml from "sanitize-html";
+import linkifyHtml from "linkify-html";
 
+const sanitizeAndLinkify = (text) => {
+  const clean = sanitizeHtml(text, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "p",
+      "br",
+      "ul",
+      "ol",
+      "li",
+      "h1",
+      "h2",
+      "h3",
+    ],
+    allowedAttributes: {
+      a: ["href", "target", "rel"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+  });
+
+  return linkifyHtml(clean, {
+    defaultProtocol: "https",
+    target: "_blank",
+    rel: "noopener noreferrer",
+  });
+};
+
+// GET: Fetch a single blog
 export async function GET(request, { params }) {
   const { blogId } = params;
 
@@ -24,17 +57,24 @@ export async function GET(request, { params }) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
-// PUT: Update blog
+
+// PUT: Replace a blog
 export async function PUT(request, { params }) {
   const blogId = params.blogId;
   const body = await request.json();
 
   try {
     await connectDB();
+
+    if (body.message) {
+      body.message = sanitizeAndLinkify(body.message);
+    }
+
     const updated = await BlogModel.findByIdAndUpdate(blogId, body, {
       new: true,
     });
-    return NextResponse.json({ msg: "Blog update", updated: updated });
+
+    return NextResponse.json({ msg: "Blog updated", updated });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update blog" },
@@ -43,6 +83,41 @@ export async function PUT(request, { params }) {
   }
 }
 
+// PATCH: Partial update
+export async function PATCH(request, { params }) {
+  const { blogId } = params;
+
+  if (!blogId || !Types.ObjectId.isValid(blogId)) {
+    return NextResponse.json({ error: "Invalid blog ID" }, { status: 400 });
+  }
+
+  const body = await request.json();
+
+  try {
+    await connectDB();
+
+    if (body.message) {
+      body.message = sanitizeAndLinkify(body.message);
+    }
+
+    const updated = await BlogModel.findByIdAndUpdate(blogId, body, {
+      new: true,
+    });
+
+    if (!updated) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ msg: "Blog patched", updated });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to patch blog" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE: Remove blog
 export async function DELETE(request, { params }) {
   const { blogId } = params;
   if (!blogId || !Types.ObjectId.isValid(blogId)) {
@@ -57,34 +132,6 @@ export async function DELETE(request, { params }) {
     console.error("DELETE error:", error);
     return NextResponse.json(
       { error: "Failed to delete blog" },
-      { status: 500 }
-    );
-  }
-}
-export async function PATCH(request, { params }) {
-  const { blogId } = params;
-
-  if (!blogId || !Types.ObjectId.isValid(blogId)) {
-    return NextResponse.json({ error: "Invalid blog ID" }, { status: 400 });
-  }
-
-  const body = await request.json();
-
-  try {
-    await connectDB();
-
-    const updated = await BlogModel.findByIdAndUpdate(blogId, body, {
-      new: true,
-    });
-
-    if (!updated) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ msg: "Blog patched", updated });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to patch blog" },
       { status: 500 }
     );
   }
