@@ -90,7 +90,7 @@ export default function BlogDetails() {
         const res = await axios.get(`/api/comments/${blogId}`);
         setComments(res.data.comments);
       } catch (err) {
-        console.error("Failed to load comments", err);
+        console.error("Failed to load comment", err);
       }
     };
 
