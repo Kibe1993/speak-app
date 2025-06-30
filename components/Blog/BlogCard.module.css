@@ -83,3 +83,12 @@
 .readMore:hover {
   text-decoration: underline;
 }
+.message a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.message a:hover {
+  color: #1e40af;
+}

@@ -32,7 +32,7 @@ export default function Navbar() {
 
   const links = [
     { name: "Home", href: "/" },
-    { name: "Blog", href: "/blogs" },
+    { name: "Blogs", href: "/blogs" },
     { name: "Share", href: "/share" },
     { name: "Contact", href: "/contact" },
   ];

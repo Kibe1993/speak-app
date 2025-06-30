@@ -1,5 +1,6 @@
 import BlogModel from "@/lib/models/BlogModel";
 import connectDB from "@/lib/config/DB";
+import sanitizeHtml from "sanitize-html";
 
 export default async function handler(req, res) {
   await connectDB();
@@ -21,11 +22,34 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "All fields are required." });
       }
 
+      // ✅ Sanitize message input to prevent XSS
+      const cleanMessage = sanitizeHtml(message, {
+        allowedTags: [
+          "b",
+          "i",
+          "em",
+          "strong",
+          "a",
+          "p",
+          "br",
+          "ul",
+          "ol",
+          "li",
+          "h1",
+          "h2",
+          "h3",
+        ],
+        allowedAttributes: {
+          a: ["href", "target"],
+        },
+        allowedSchemes: ["http", "https", "mailto"],
+      });
+
       const newBlog = await BlogModel.create({
         title,
         author,
         category,
-        message,
+        message: cleanMessage,
         image,
       });
 

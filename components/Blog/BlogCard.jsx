@@ -24,9 +24,10 @@ export default function BlogCard({ blog }) {
         <span className={styles.category}>{blog.category}</span>
       </div>
 
-      <div className={styles.message}>
-        <p>{blog.message}</p>
-      </div>
+      <div
+        className={styles.message}
+        dangerouslySetInnerHTML={{ __html: blog.message }}
+      />
 
       <div className={styles.meta}>
         <p>{blog.author}</p>

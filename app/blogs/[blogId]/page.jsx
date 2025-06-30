@@ -169,7 +169,11 @@ export default function BlogDetails() {
 
           {/* 📃 Blog Body */}
           <main className={styles.main}>
-            <p className={styles.message}>{blog.message}</p>
+            <div
+              className={styles.message}
+              dangerouslySetInnerHTML={{ __html: blog.message }}
+            />
+
             <div className={styles.actions}>
               <Link
                 href={`/blogs/${blogId}/edit`}
