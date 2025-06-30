@@ -38,6 +38,7 @@ export default function BlogDetails() {
       "kiberichard.kr@gmail.com",
       "denniskariuki337@gmail.com",
       "richardkibe.dev@gmail.com",
+      "realephankibe@gmail.com",
     ].includes(user?.primaryEmailAddress?.emailAddress?.toLowerCase());
 
   // 📡 Fetch blog on mount
