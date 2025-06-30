@@ -13,8 +13,7 @@ export default function FeaturedItem({ item }) {
             <Image
               src={item.image}
               alt={item.title}
-              width={400}
-              height={250}
+              fill
               className={styles.image}
             />
           </div>

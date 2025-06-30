@@ -7,7 +7,7 @@ export default function BlogCard({ blog }) {
   const formattedDate = dateToUse.toLocaleString();
   return (
     <div className={styles.card}>
-      <Link href={`/blogs/${blog._id}`} className={styles.imageWrapper}>
+      <Link href={`/blogs/${blog._id}`}>
         <div className={styles.imageWrapper}>
           <Image
             src={blog.image}

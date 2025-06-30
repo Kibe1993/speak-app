@@ -12,6 +12,7 @@ export default function SharePage() {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
   const [editorContent, setEditorContent] = useState("");
+  const [resetEditor, setResetEditor] = useState(0);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -60,6 +61,7 @@ export default function SharePage() {
       form.reset();
       setPreview(null);
       setEditorContent("");
+      setResetEditor((prev) => prev + 1);
     } catch (err) {
       console.error(err);
       toast.error("❌ Failed to submit blog.");
@@ -136,7 +138,11 @@ export default function SharePage() {
 
         <div className={styles.formGroup}>
           <label>Blog</label>
-          <LexicalEditor onChange={setEditorContent} />
+          <LexicalEditor
+            key={resetEditor}
+            onChange={setEditorContent}
+            reset={resetEditor}
+          />
         </div>
 
         <button type="submit" className={styles.submitBtn} disabled={loading}>
