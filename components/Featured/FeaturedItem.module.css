@@ -96,3 +96,12 @@
     padding: 0.4rem 0.8rem;
   }
 }
+.message a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  word-break: break-word;
+}
+
+.message a:hover {
+  color: #1e40af;
+}

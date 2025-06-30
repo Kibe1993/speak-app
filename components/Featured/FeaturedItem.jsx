@@ -26,9 +26,10 @@ export default function FeaturedItem({ item }) {
         <span className={styles.category}>{item.category}</span>
       </div>
 
-      <div className={styles.message}>
-        <p>{item.message}</p>
-      </div>
+      <div
+        className={styles.message}
+        dangerouslySetInnerHTML={{ __html: blog.message }}
+      />
 
       <div className={styles.meta}>
         <p>{item.author}</p>
