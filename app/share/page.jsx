@@ -5,15 +5,7 @@ import { Upload } from "lucide-react";
 import styles from "./page.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import dynamic from "next/dynamic";
-
-// Dynamically import LexicalEditor to avoid SSR issues
-const LexicalEditor = dynamic(
-  () => import("@/components/Editor/LexicalEditor"),
-  {
-    ssr: false,
-  }
-);
+import LexicalEditor from "@/components/editor/LexicalEditor";
 
 export default function SharePage() {
   const fileRef = useRef(null);
