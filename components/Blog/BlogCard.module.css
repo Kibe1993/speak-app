@@ -83,12 +83,31 @@
 .readMore:hover {
   text-decoration: underline;
 }
-.message a {
-  color: #1d4ed8;
-  text-decoration: underline;
+
+/* Add this if showing rich text inside a card */
+.blogContent {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-height: 6em; /* Limit height */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.blogContent p {
+  margin: 0;
+}
+
+.blogContent a {
+  text-decoration: none !important;
+  color: #143a8a !important;
+  font-weight: 500;
   word-break: break-word;
 }
 
-.message a:hover {
-  color: #1e40af;
+.blogContent a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
 }

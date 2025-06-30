@@ -41,6 +41,17 @@ export default function BlogDetails() {
     if (blogId) fetchBlog();
   }, [blogId]);
 
+  useEffect(() => {
+    if (!loading && blog) {
+      document
+        .querySelectorAll(`.${styles.blogContent} a`)
+        .forEach((anchor) => {
+          anchor.setAttribute("target", "_blank");
+          anchor.setAttribute("rel", "noopener noreferrer");
+        });
+    }
+  }, [loading, blog]);
+
   // 🗑️ Handle blog deletion
   // const handleDelete = async () => {
   //   const confirmDelete = window.confirm(
@@ -170,7 +181,7 @@ export default function BlogDetails() {
           {/* 📃 Blog Body */}
           <main className={styles.main}>
             <div
-              className={styles.message}
+              className={styles.blogContent}
               dangerouslySetInnerHTML={{ __html: blog.message }}
             />
 

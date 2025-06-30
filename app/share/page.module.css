@@ -107,3 +107,28 @@
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
+.editorContainer {
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  background-color: #ffffff;
+  padding: 1rem;
+  min-height: 250px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.editor-input {
+  min-height: 180px;
+  outline: none;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #111827; /* Tailwind gray-900 */
+}
+
+.editor-placeholder {
+  color: #9ca3af; /* Tailwind gray-400 */
+  position: absolute;
+  pointer-events: none;
+}

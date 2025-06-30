@@ -5,8 +5,9 @@ import BlogModel from "@/lib/models/BlogModel";
 import sanitizeHtml from "sanitize-html";
 import linkifyHtml from "linkify-html";
 
+// 🧼 Clean + auto-link text
 const sanitizeAndLinkify = (text) => {
-  const clean = sanitizeHtml(text, {
+  const sanitized = sanitizeHtml(text, {
     allowedTags: [
       "b",
       "i",
@@ -28,14 +29,14 @@ const sanitizeAndLinkify = (text) => {
     allowedSchemes: ["http", "https", "mailto"],
   });
 
-  return linkifyHtml(clean, {
+  return linkifyHtml(sanitized, {
     defaultProtocol: "https",
     target: "_blank",
     rel: "noopener noreferrer",
   });
 };
 
-// GET: Fetch a single blog
+// 🔍 GET: Fetch a blog
 export async function GET(request, { params }) {
   const { blogId } = params;
 
@@ -58,9 +59,9 @@ export async function GET(request, { params }) {
   }
 }
 
-// PUT: Replace a blog
+// ✏️ PUT: Replace entire blog
 export async function PUT(request, { params }) {
-  const blogId = params.blogId;
+  const { blogId } = params;
   const body = await request.json();
 
   try {
@@ -76,6 +77,7 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json({ msg: "Blog updated", updated });
   } catch (error) {
+    console.error("PUT error:", error);
     return NextResponse.json(
       { error: "Failed to update blog" },
       { status: 500 }
@@ -83,7 +85,7 @@ export async function PUT(request, { params }) {
   }
 }
 
-// PATCH: Partial update
+// ✂️ PATCH: Partially update blog
 export async function PATCH(request, { params }) {
   const { blogId } = params;
 
@@ -110,6 +112,7 @@ export async function PATCH(request, { params }) {
 
     return NextResponse.json({ msg: "Blog patched", updated });
   } catch (error) {
+    console.error("PATCH error:", error);
     return NextResponse.json(
       { error: "Failed to patch blog" },
       { status: 500 }
@@ -117,9 +120,10 @@ export async function PATCH(request, { params }) {
   }
 }
 
-// DELETE: Remove blog
+// 🗑️ DELETE: Remove blog
 export async function DELETE(request, { params }) {
   const { blogId } = params;
+
   if (!blogId || !Types.ObjectId.isValid(blogId)) {
     return NextResponse.json({ error: "Invalid blog ID" }, { status: 400 });
   }

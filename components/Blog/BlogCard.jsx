@@ -25,7 +25,7 @@ export default function BlogCard({ blog }) {
       </div>
 
       <div
-        className={styles.message}
+        className={styles.blogContent}
         dangerouslySetInnerHTML={{ __html: blog.message }}
       />
 

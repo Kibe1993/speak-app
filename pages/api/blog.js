@@ -3,9 +3,41 @@ import connectDB from "@/lib/config/DB";
 import sanitizeHtml from "sanitize-html";
 import linkifyHtml from "linkify-html";
 
+// 🔒 Sanitize and linkify in one step
+const sanitizeAndLinkify = (text) => {
+  const sanitized = sanitizeHtml(text, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "p",
+      "br",
+      "ul",
+      "ol",
+      "li",
+      "h1",
+      "h2",
+      "h3",
+    ],
+    allowedAttributes: {
+      a: ["href", "target", "rel"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+  });
+
+  return linkifyHtml(sanitized, {
+    defaultProtocol: "https",
+    target: "_blank",
+    rel: "noopener noreferrer",
+  });
+};
+
 export default async function handler(req, res) {
   await connectDB();
 
+  // GET all blogs
   if (req.method === "GET") {
     try {
       const blogs = await BlogModel.find({}).sort({ createdAt: -1 });
@@ -15,6 +47,7 @@ export default async function handler(req, res) {
     }
   }
 
+  // POST new blog
   if (req.method === "POST") {
     try {
       const { title, author, category, message, image } = req.body;
@@ -23,41 +56,14 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "All fields are required." });
       }
 
-      // Step 1: Sanitize dangerous HTML
-      const cleanMessage = sanitizeHtml(message, {
-        allowedTags: [
-          "b",
-          "i",
-          "em",
-          "strong",
-          "a",
-          "p",
-          "br",
-          "ul",
-          "ol",
-          "li",
-          "h1",
-          "h2",
-          "h3",
-        ],
-        allowedAttributes: {
-          a: ["href", "target", "rel"],
-        },
-        allowedSchemes: ["http", "https", "mailto"],
-      });
-
-      // Step 2: Convert raw links into <a> tags
-      const linkedMessage = linkifyHtml(cleanMessage, {
-        defaultProtocol: "https",
-        target: "_blank",
-        rel: "noopener noreferrer",
-      });
+      // 🧼 Clean + auto-link user message
+      const cleanMessage = sanitizeAndLinkify(message);
 
       const newBlog = await BlogModel.create({
         title,
         author,
         category,
-        message: linkedMessage,
+        message: cleanMessage,
         image,
       });
 
@@ -68,5 +74,6 @@ export default async function handler(req, res) {
     }
   }
 
+  // Method not allowed
   res.status(405).json({ error: "Method not allowed" });
 }

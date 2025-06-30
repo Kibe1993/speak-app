@@ -1,0 +1,28 @@
+.editorWrapper {
+  position: relative;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 6px;
+  background-color: #fff;
+  min-height: 200px;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.editorInput {
+  min-height: 150px;
+  width: 100%;
+  outline: none;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #111827; /* gray-900 */
+}
+
+.editorPlaceholder {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  color: #9ca3af; /* gray-400 */
+  pointer-events: none;
+  font-size: 1rem;
+  line-height: 1.6;
+}

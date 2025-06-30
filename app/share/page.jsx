@@ -1,20 +1,29 @@
 "use client";
+
 import { useRef, useState } from "react";
 import { Upload } from "lucide-react";
 import styles from "./page.module.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import dynamic from "next/dynamic";
+
+// Dynamically import LexicalEditor to avoid SSR issues
+const LexicalEditor = dynamic(
+  () => import("@/components/Editor/LexicalEditor"),
+  {
+    ssr: false,
+  }
+);
 
 export default function SharePage() {
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
+  const [editorContent, setEditorContent] = useState("");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
+    if (file) setPreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async (e) => {
@@ -31,49 +40,34 @@ export default function SharePage() {
     }
 
     try {
-      // Upload image to Cloudinary
-      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-
-      console.log("Cloud name:", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
-      console.log(
-        "Upload preset:",
+      const cloudForm = new FormData();
+      cloudForm.append("file", file);
+      cloudForm.append(
+        "upload_preset",
         process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
       );
 
-      const cloudForm = new FormData();
-      cloudForm.append("file", file);
-      cloudForm.append("upload_preset", uploadPreset);
-
-      const cloudRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        {
-          method: "POST",
-          body: cloudForm,
-        }
+      const resCloud = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: cloudForm }
       );
+      const cloudData = await resCloud.json();
 
-      const cloudData = await cloudRes.json();
+      if (!cloudData.secure_url) throw new Error("Image upload failed");
 
-      if (!cloudData.secure_url) {
-        console.error("Cloudinary error response:", cloudData);
-        throw new Error("Cloudinary upload failed");
-      }
-
-      // Submit blog data to your API
       const blogData = {
         title: form.title.value,
         author: form.author.value,
         category: form.category.value,
-        message: form.message.value,
+        message: editorContent,
         image: cloudData.secure_url,
       };
 
       const res = await axios.post("/api/blog", blogData);
       toast.success(res.data.message);
-
       form.reset();
       setPreview(null);
+      setEditorContent("");
     } catch (err) {
       console.error(err);
       toast.error("❌ Failed to submit blog.");
@@ -149,14 +143,8 @@ export default function SharePage() {
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="message">Blog</label>
-          <textarea
-            id="message"
-            name="message"
-            rows="8"
-            placeholder="What's on your mind..."
-            required
-          />
+          <label>Blog</label>
+          <LexicalEditor onChange={setEditorContent} />
         </div>
 
         <button type="submit" className={styles.submitBtn} disabled={loading}>
